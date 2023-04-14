@@ -1,25 +1,42 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import  {FC, Key, useState } from 'react'
+import Header from './components/Header';
+import TasksList from './components/TasksList';
 
-function App() {
+
+
+
+export interface ITasks{
+  id?:Date | undefined,
+  title:string,
+  description:string,
+  IsComplete: boolean,
+  createdDate:Date
+} 
+
+const App:FC = () => {
+  const [tasks, setTasks] = useState<ITasks[]>([])
+
+  const handleCreatePost = (task: ITasks) => {
+    setTasks([...tasks, task]);
+  };
+  const handleDeleteTask = (id:Date | undefined) => {
+    const newTasks = tasks.filter(task => task.id !== id);
+    setTasks(newTasks);
+  }
+  const handleCompleteTask = (id:Date | undefined) => {
+    const newTasks = tasks.map((task) =>
+    task.id === id ? { ...task, IsComplete: true } : task
+  );
+  setTasks(newTasks);
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <>
+    <Header />
+    <div className='bg-zinc-300 py-14'>
+    <TasksList handleCreatePost = {handleCreatePost} handleDeleteTask= {handleDeleteTask} tasks = {tasks} handleCompleteTask = {handleCompleteTask} />
     </div>
+    </>
   );
 }
 
