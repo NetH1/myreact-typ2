@@ -1,40 +1,32 @@
-import  {FC, Key, useState } from 'react'
+import  {FC, useState } from 'react'
 import Header from './components/Header';
 import TasksList from './components/TasksList';
+import DeletedTasks from './components/DeletedTask';
 
 
 
 
-export interface ITasks{
-  id?:Date | undefined,
-  title:string,
-  description:string,
-  IsComplete: boolean,
-  createdDate:Date
-} 
+
 
 const App:FC = () => {
-  const [tasks, setTasks] = useState<ITasks[]>([])
 
-  const handleCreatePost = (task: ITasks) => {
-    setTasks([...tasks, task]);
-  };
-  const handleDeleteTask = (id:Date | undefined) => {
-    const newTasks = tasks.filter(task => task.id !== id);
-    setTasks(newTasks);
-  }
-  const handleCompleteTask = (id:Date | undefined) => {
-    const newTasks = tasks.map((task) =>
-    task.id === id ? { ...task, IsComplete: true } : task
-  );
-  setTasks(newTasks);
-  }
+  // const handleCompleteTask = (id:Date | undefined) => {
+  //   setTasks((prevTasks) =>
+  //     prevTasks.map((task) =>
+  //       task.id === id ? { ...task, IsComplete: !task.IsComplete } : task
+  //     )
+  //   );
+  // }
 
   return (
     <>
     <Header />
     <div className='bg-zinc-300 py-14'>
-    <TasksList handleCreatePost = {handleCreatePost} handleDeleteTask= {handleDeleteTask} tasks = {tasks} handleCompleteTask = {handleCompleteTask} />
+    <TasksList />
+    <div className='flex flex-col justify-center '>
+      <h1 className='text-center text-white text-3xl'>DeletedTasks</h1>
+      <DeletedTasks />
+    </div>
     </div>
     </>
   );

@@ -2,13 +2,14 @@ import React, { useState } from 'react';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { Box } from '@mui/material';
-import { ITasks } from '../../App';
+import { useAppDispatch } from '../../store/hooks';
+import { addTask } from '../../store/tasksSlice';
 
 interface ICreateTaskProps {
-    handleCreatePost:(task:ITasks) => void
 }
 
-const CreateTask: React.FC<ICreateTaskProps> = ({handleCreatePost}) => {
+const CreateTask: React.FC<ICreateTaskProps> = () => {
+    const dispatch = useAppDispatch()
     const [taskform, setTaskform] = useState({
         title:'',
         description:''
@@ -22,14 +23,13 @@ const CreateTask: React.FC<ICreateTaskProps> = ({handleCreatePost}) => {
     }
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        const newTask:ITasks ={
+        dispatch(addTask({
             id:new Date(),
             title:taskform.title,
             description:taskform.description,
             IsComplete: false,
             createdDate:new Date()
-        }
-        handleCreatePost(newTask)
+        }))
     setTaskform({title:'', description:''});
       };
     return (
